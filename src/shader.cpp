@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <cstring>
 
 
 namespace
@@ -38,17 +39,47 @@ namespace Tenasi::Shader
         GLuint shaderV = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(shaderV, 1, &contentV, nullptr);
         glCompileShader(shaderV);
+        compileErrors(shaderV, "VERTEX");
 
         GLuint shaderF = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(shaderF, 1, &contentF, nullptr);
         glCompileShader(shaderF);
+        compileErrors(shaderF, "FRAGMENT");
 
         ID = glCreateProgram();
         glAttachShader(ID, shaderV);
         glAttachShader(ID, shaderF);
         glLinkProgram(ID);
+        compileErrors(ID, "PROGRAM");
 
         glDeleteShader(shaderV);
         glDeleteShader(shaderF);
+    }
+    void TShader::compileErrors(unsigned int shader, const char *type)
+    {
+        GLint hasCompiled = 0;
+        char infoLog[1024];
+
+        // compare content safely
+        if (std::strcmp(type, "PROGRAM") != 0)
+        {
+            // shader compilation status
+            glGetShaderiv(shader, GL_COMPILE_STATUS, &hasCompiled);
+            if (hasCompiled == GL_FALSE)
+            {
+                glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+                std::cout << "SHADER_COMPILATION_ERR >> " << type << "\n" << infoLog << std::endl;
+            }
+        }
+        else
+        {
+            // program linking status
+            glGetProgramiv(shader, GL_LINK_STATUS, &hasCompiled);
+            if (hasCompiled == GL_FALSE)
+            {
+                glGetProgramInfoLog(shader, 1024, NULL, infoLog);
+                std::cout << "SHADER_LINKING_ERR >> " << type << "\n" << infoLog << std::endl;
+            }
+        }
     }
 }

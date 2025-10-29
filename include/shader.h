@@ -67,5 +67,6 @@ namespace Tenasi::Shader
         GLuint getID() const noexcept { return ID; }
     private:
         GLuint  ID = 0;  
+        void compileErrors(unsigned int shader, const char* type);
     };
 }

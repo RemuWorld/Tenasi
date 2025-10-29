@@ -9,10 +9,10 @@ namespace Tenasi::Shader
         glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
     }
 
-    void VBO::readFormat(GLuint layout)
+    void VBO::readFormat(GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void *offset)
     {
         glBindBuffer(GL_ARRAY_BUFFER, ID);
-        glVertexAttribPointer(layout, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+        glVertexAttribPointer(layout, numComponents, type, GL_FALSE, stride, offset);
         glEnableVertexAttribArray(layout);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }

@@ -24,6 +24,6 @@ namespace Tenasi::Shader
             glDeleteBuffers(1, &ID); 
         }
 
-        void readFormat(GLuint layout);
+        void readFormat(GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void* offset);
     };
 }

@@ -18,11 +18,12 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // vertex data
-    GLfloat vertices[] = {
-        -0.5f, -0.5f, 0.0f, //Bottom left
-        0.5f, -0.5f, 0.0f, // Bottom right
-        0.5f, 0.5f, 0.0f, // Top right
-        -0.5f, 0.5f, 0.0f // Top left
+    GLfloat vertices[] = 
+    {  //------Coord------//  //-----Color------//
+        -0.5f, -0.5f, 0.0f,    0.2f, 0.3f, 0.4f,                  //Bottom left
+         0.5f, -0.5f, 0.0f,    0.3f, 0.4f, 0.5f,                  // Bottom right
+         0.5f,  0.5f, 0.0f,    0.4f, 0.5f, 0.6f,                  // Top right
+        -0.5f,  0.5f, 0.0f,    0.5f, 0.6f, 0.7f                   // Top left
     };
 
     GLuint indices[] = {
@@ -60,13 +61,17 @@ int main()
     Tenasi::Shader::VBO VBO(vertices, sizeof(vertices));
     Tenasi::Shader::EBO EBO(indices, sizeof(indices));
 
-    VBO.readFormat(0);
+    VBO.readFormat(0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+    VBO.readFormat(1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
 
     // Unbind VAO (optional). It's fine to unbind VBO; do not unbind the EBO while
     // the VAO is still bound if you want the EBO to remain associated with the VAO.
     VAO.unbind();
     VBO.unbind();
     EBO.unbind();
+
+
+    GLuint uniID= glGetUniformLocation(shaderProgram.getID(), "scale");
 
 
 
@@ -81,6 +86,8 @@ int main()
         glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         shaderProgram.use();
+        glUniform1f(uniID, 0.5f);
+
         VAO.bind();
         glDrawElements(GL_TRIANGLES, res,  GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
