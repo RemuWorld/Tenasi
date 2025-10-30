@@ -52,14 +52,14 @@ int main()
     // shader files are located in the top-level "shaders/" folder (copied by CMake)
     Tenasi::Shader::TShader shaderProgram("shaders/distk.vert", "shaders/distk.frag");
 
-    Tenasi::Shader::VAO VAO;
+    Tenasi::Mesh::VAO VAO;
 
     // Bind the VAO before creating/binding VBO and EBO so
     // vertex attribute pointers and the element buffer are stored in the VAO.
     VAO.bind();
 
-    Tenasi::Shader::VBO VBO(vertices, sizeof(vertices));
-    Tenasi::Shader::EBO EBO(indices, sizeof(indices));
+    Tenasi::Mesh::VBO VBO(vertices, sizeof(vertices));
+    Tenasi::Mesh::EBO EBO(indices, sizeof(indices));
 
     VBO.readFormat(0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
     VBO.readFormat(1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));

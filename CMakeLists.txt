@@ -25,6 +25,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glad)
 
+# === GLM ===
+FetchContent_Declare(
+  glm
+  GIT_REPOSITORY https://github.com/g-truc/glm.git
+  GIT_TAG master
+)
+FetchContent_MakeAvailable(glm)
+
 if (NOT TARGET glad)
   add_library(glad STATIC ${glad_SOURCE_DIR}/src/glad.c)
   target_include_directories(glad PUBLIC ${glad_SOURCE_DIR}/include)
@@ -48,6 +56,7 @@ add_executable(${PROJECT_NAME}
     src/mesh_vao.cpp
     src/mesh_vbo.cpp
     src/mesh_ebo.cpp
+    src/mesh.cpp
     )
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
@@ -55,4 +64,4 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
 target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Werror -O2)
 
 find_package(OpenGL REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glfw glad)
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glfw glad glm)

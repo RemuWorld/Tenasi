@@ -2,7 +2,6 @@
 
 /* OpenGL standard file includes */
 #include <glad/glad.h>
-#include <glfw/glfw3.h>
 
 /* C++ Standard file includes */
 #include <string>
@@ -28,7 +27,7 @@ namespace Tenasi::Shader
         TShader(const char*, const char*);
 
         /**
-         * @def use
+         * @def use()
          * @brief Activates the shader
          * */
         void use() const noexcept 
@@ -37,7 +36,7 @@ namespace Tenasi::Shader
         }
 
         /**
-         * @def unuse
+         * @def unuse()
          * @brief Deactivates the shader
          */
         void unuse() const noexcept 
@@ -46,7 +45,7 @@ namespace Tenasi::Shader
         }
 
         /**
-         * @def deletion
+         * @def deletion()
          * @brief Deletes the shader
          */
         void deletion() const noexcept
@@ -55,8 +54,8 @@ namespace Tenasi::Shader
         }
 
         /**
-         * @def unbind
-         * @brief A static version of ```TShader::unuse()``` \n
+         * @def unbind()
+         * @brief A static version of `TShader::unuse()` \n
          * which can unbind anywhere. (Chances of garbage value deletion)
          */
         static inline void unbind() noexcept 

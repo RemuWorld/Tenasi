@@ -2,8 +2,13 @@
 
 #include <glad/glad.h>
 
-namespace Tenasi::Shader
+namespace Tenasi::Mesh
 {
+    /**
+     * @struct VAO
+     * @brief Manages VAO
+     * @namespace Tenasi::Mesh
+     */
     struct VAO
     {
         GLuint ID = 0;
@@ -12,17 +17,17 @@ namespace Tenasi::Shader
             glGenVertexArrays(1, &ID);
         }
 
-        void bind() const noexcept
+        inline void bind() const noexcept
         {
             glBindVertexArray(ID);
         }
 
-        void unbind() const noexcept
+        static inline void unbind() noexcept
         {
             glBindVertexArray(0);
         }
 
-        void deletion() const noexcept
+        inline void deletion() const noexcept
         {
             glDeleteVertexArrays(1, &ID);
         }
