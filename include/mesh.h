@@ -31,6 +31,20 @@ namespace Tenasi::Mesh
             glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
         }
 
+        inline void unbind() const
+        {
+            vao.unbind();
+            vbo.unbind();
+            ebo.unbind();
+        }
+
+        inline void deletion() const
+        {
+            vao.deletion();
+            vbo.deletion();
+            ebo.deletion();
+        }
+
     private:
         VAO vao;
         VBO vbo;
@@ -39,9 +53,8 @@ namespace Tenasi::Mesh
 
         void setupAttributes()
         {
-            // Example: 3 floats = position
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-            glEnableVertexAttribArray(0);
+            vbo.readFormat(0, 3, GL_FLOAT, 6 * sizeof(float), (void *)0);
+            vbo.readFormat(1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
         }
     };
 }

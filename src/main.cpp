@@ -2,6 +2,7 @@
 #include <cmath>
 #include "header.h"
 #include "shader.h"
+#include "mesh.h"
 #include "mesh_vao.h"
 #include "mesh_vbo.h"
 #include "mesh_ebo.h"
@@ -52,23 +53,10 @@ int main()
     // shader files are located in the top-level "shaders/" folder (copied by CMake)
     Tenasi::Shader::TShader shaderProgram("shaders/distk.vert", "shaders/distk.frag");
 
-    Tenasi::Mesh::VAO VAO;
+    constexpr GLuint res = (sizeof(indices) / sizeof(unsigned int));
+    Tenasi::Mesh::TMesh obj(vertices, sizeof(vertices), indices, sizeof(indices), res);
 
-    // Bind the VAO before creating/binding VBO and EBO so
-    // vertex attribute pointers and the element buffer are stored in the VAO.
-    VAO.bind();
-
-    Tenasi::Mesh::VBO VBO(vertices, sizeof(vertices));
-    Tenasi::Mesh::EBO EBO(indices, sizeof(indices));
-
-    VBO.readFormat(0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
-    VBO.readFormat(1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
-
-    // Unbind VAO (optional). It's fine to unbind VBO; do not unbind the EBO while
-    // the VAO is still bound if you want the EBO to remain associated with the VAO.
-    VAO.unbind();
-    VBO.unbind();
-    EBO.unbind();
+    obj.unbind();
 
 
     GLuint uniID= glGetUniformLocation(shaderProgram.getID(), "scale");
@@ -79,7 +67,7 @@ int main()
     glClear(GL_COLOR_BUFFER_BIT);
     glfwSwapBuffers(window);
 
-    constexpr GLuint res = (sizeof(indices) / sizeof(unsigned int));
+    
 
         while (!glfwWindowShouldClose(window))
     {
@@ -87,18 +75,14 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         shaderProgram.use();
         glUniform1f(uniID, 0.5f);
-
-        VAO.bind();
-        glDrawElements(GL_TRIANGLES, res,  GL_UNSIGNED_INT, 0);
+        obj.draw();
         glfwSwapBuffers(window);
 
 
         glfwPollEvents();
     }
 
-    VAO.deletion();
-    VBO.deletion();
-    EBO.deletion();
+    obj.deletion();
     shaderProgram.deletion();
     
     glfwDestroyWindow(window);
