@@ -48,7 +48,8 @@ message(STATUS " - Path     \t: ${CMAKE_CXX_COMPILER}")
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+# REMOVED THIS LINE: set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+# The executable will now be created in the build directory by default.
 
 add_executable(${PROJECT_NAME} 
     src/main.cpp
@@ -57,11 +58,28 @@ add_executable(${PROJECT_NAME}
     src/mesh_vbo.cpp
     src/mesh_ebo.cpp
     src/mesh.cpp
-    )
+)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/inc    
+)
 
 target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Werror -O2)
 
 find_package(OpenGL REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glfw glad glm)
+target_link_libraries(${PROJECT_NAME} PRIVATE 
+    OpenGL::GL glfw glad glm
+)
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${PROJECT_SOURCE_DIR}/resource"
+    "$<TARGET_FILE_DIR:${PROJECT_NAME}>/resource"
+)
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    "$<TARGET_FILE:${PROJECT_NAME}>"
+    "${PROJECT_SOURCE_DIR}/$<TARGET_FILE_NAME:${PROJECT_NAME}>"
+)

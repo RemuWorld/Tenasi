@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 
 /* C++ Standard file includes */
+#include <memory>
 
 /* Tenasi file includes*/
 #include "mesh_vao.h"
@@ -51,10 +52,6 @@ namespace Tenasi::Mesh
         EBO ebo;
         GLsizei indexCount;
 
-        void setupAttributes()
-        {
-            vbo.readFormat(0, 3, GL_FLOAT, 6 * sizeof(float), (void *)0);
-            vbo.readFormat(1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
-        }
+        void setupAttributes();
     };
 }

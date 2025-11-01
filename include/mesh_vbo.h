@@ -48,7 +48,5 @@ namespace Tenasi::Mesh
         { 
             glDeleteBuffers(1, &ID); 
         }
-
-        void readFormat(GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void* offset);
     };
 }

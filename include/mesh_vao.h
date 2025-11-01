@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
+#include <mesh_vbo.h>
 
 namespace Tenasi::Mesh
 {
@@ -31,5 +32,7 @@ namespace Tenasi::Mesh
         {
             glDeleteVertexArrays(1, &ID);
         }
+
+        void readFormat(const VBO &vbo, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void* offset);
     };
 }

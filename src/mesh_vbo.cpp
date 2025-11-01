@@ -18,12 +18,4 @@ namespace Tenasi::Mesh
             throw std::runtime_error("VBO creation failed: " + std::to_string(err));
         }
     }
-
-    void VBO::readFormat(GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void *offset)
-    {
-        glBindBuffer(GL_ARRAY_BUFFER, ID);
-        glVertexAttribPointer(layout, numComponents, type, GL_FALSE, stride, offset);
-        glEnableVertexAttribArray(layout);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-    }
 }
