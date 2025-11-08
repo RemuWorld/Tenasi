@@ -36,12 +36,12 @@ namespace Tenasi::Shader
         }
 
         /**
-         * @def unuse()
+         * @def unbind()
          * @brief Deactivates the shader
          */
-        void unuse() const noexcept 
-        { 
-            glUseProgram(0); 
+        static inline void unbind() noexcept
+        {
+            glUseProgram(0);
         }
 
         /**
@@ -51,16 +51,6 @@ namespace Tenasi::Shader
         void deletion() const noexcept
         { 
             glDeleteProgram(ID); 
-        }
-
-        /**
-         * @def unbind()
-         * @brief A static version of `TShader::unuse()` \n
-         * which can unbind anywhere. (Chances of garbage value deletion)
-         */
-        static inline void unbind() noexcept 
-        { 
-            glUseProgram(0); 
         }
 
         GLuint getID() const noexcept { return ID; }

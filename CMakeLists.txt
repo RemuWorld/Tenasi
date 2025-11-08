@@ -48,9 +48,6 @@ message(STATUS " - Path     \t: ${CMAKE_CXX_COMPILER}")
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# REMOVED THIS LINE: set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
-# The executable will now be created in the build directory by default.
-
 add_executable(${PROJECT_NAME} 
     src/main.cpp
     src/shader.cpp
@@ -58,6 +55,7 @@ add_executable(${PROJECT_NAME}
     src/mesh_vbo.cpp
     src/mesh_ebo.cpp
     src/mesh.cpp
+    src/texture.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
