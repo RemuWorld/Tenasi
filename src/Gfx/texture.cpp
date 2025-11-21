@@ -1,8 +1,9 @@
 #include "texture.h"
+#include <stb_image.h>
 
-namespace Tenasi::Texture
+namespace Tenasi::Gfx
 {
-    TTexture::TTexture(const char *image, GLenum texType, GLenum slot, GLenum format, GLenum pixelType)
+    Texture::Texture(const char *image, GLenum texType, GLenum slot, GLenum format, GLenum pixelType)
     {
         type = texType;
         int widthImg, heightImg, numColCh;
@@ -29,7 +30,7 @@ namespace Tenasi::Texture
         glBindTexture(texType, 0);
     }
 
-    void TTexture::texUnit(Shader::TShader shader, const char *uniform, GLuint unit)
+    void Texture::texUnit(Shader shader, const char *uniform, GLuint unit)
     {
         GLuint tex0Uni = glGetUniformLocation(shader.getID(), uniform);
         shader.use();

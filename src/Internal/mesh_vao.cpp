@@ -1,10 +1,10 @@
-#include "mesh_vao.h"
-
 #include <cerrno>
 #include <stdexcept>
 #include <string>
 
-namespace Tenasi::Mesh
+#include "mesh_vao.h"
+
+namespace Tenasi::Internal
 {
     void VAO::readFormat(const VBO &vbo, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void *offset)
     {

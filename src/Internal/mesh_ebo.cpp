@@ -1,10 +1,10 @@
-#include "mesh_ebo.h"
-
 #include <cerrno>
 #include <stdexcept>
 #include <string>
 
-namespace Tenasi::Mesh
+#include "mesh_ebo.h"
+
+namespace Tenasi::Internal
 {
     EBO::EBO(GLuint* indices, GLsizeiptr size)
     {

@@ -1,8 +1,8 @@
 #include "mesh.h"
 
-namespace Tenasi::Mesh
+namespace Tenasi::Gfx
 {
-    TMesh::TMesh(GLfloat *verts, GLsizeiptr vSize, GLuint *inds, GLsizeiptr iSize, GLsizei count)
+    Mesh::Mesh(GLfloat *verts, GLsizeiptr vSize, GLuint *inds, GLsizeiptr iSize, GLsizei count)
         : vbo(verts, vSize), ebo(inds, iSize), indexCount(count)
     {
         vao.bind();
@@ -11,7 +11,7 @@ namespace Tenasi::Mesh
         setupAttributes();
     }
 
-    void TMesh::setupAttributes()
+    void Mesh::setupAttributes()
     {
         vao.bind();
         vao.readFormat(vbo, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)0);

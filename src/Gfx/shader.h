@@ -1,30 +1,19 @@
 #pragma once
 
-/* OpenGL standard file includes */
 #include <glad/glad.h>
 
-/* C++ Standard file includes */
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <cerrno>
-
-/* Tenasi file includes*/
-
-/* Extra file includes */
-
-namespace Tenasi::Shader
+namespace Tenasi::Gfx
 {
     /**
      * @class TShader
      * @brief Manages shading
      * @namespace Tenasi::Shader
      */
-    class TShader
+    class Shader
     {
     
     public:
-        TShader(const char*, const char*);
+        Shader(const char*, const char*);
 
         /**
          * @def use()

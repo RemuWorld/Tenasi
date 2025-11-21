@@ -1,9 +1,10 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <mesh_vbo.h>
 
-namespace Tenasi::Mesh
+#include "mesh_vbo.h"
+
+namespace Tenasi::Internal
 {
     /**
      * @struct VAO

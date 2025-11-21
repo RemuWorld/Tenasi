@@ -1,30 +1,23 @@
 #pragma once
 
-/* OpenGL standard file includes */
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
-/* C++ Standard file includes */
-#include <memory>
+#include "Internal/mesh_vao.h"
+#include "Internal/mesh_vbo.h"
+#include "Internal/mesh_ebo.h"
 
-/* Tenasi file includes*/
-#include "mesh_vao.h"
-#include "mesh_vbo.h"
-#include "mesh_ebo.h"
-
-/* Extra file includes */
-
-namespace Tenasi::Mesh
+namespace Tenasi::Gfx
 {
     /**
      * @class TMesh
      * @brief Manages meshes / `VAO`, `VBO`, `EBO`
      * @namespace Tenasi::Mesh
      */
-    class TMesh
+    class Mesh
     {
     public:
-        TMesh(GLfloat *verts, GLsizeiptr vSize, GLuint *inds, GLsizeiptr iSize, GLsizei count);
+        Mesh(GLfloat *verts, GLsizeiptr vSize, GLuint *inds, GLsizeiptr iSize, GLsizei count);
 
         inline void draw() const
         {
@@ -47,9 +40,9 @@ namespace Tenasi::Mesh
         }
 
     private:
-        VAO vao;
-        VBO vbo;
-        EBO ebo;
+        Internal::VAO vao;
+        Internal::VBO vbo;
+        Internal::EBO ebo;
         GLsizei indexCount;
 
         void setupAttributes();

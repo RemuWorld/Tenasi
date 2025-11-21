@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-namespace Tenasi::Mesh
+namespace Tenasi::Internal
 {
     /**
      * @struct EBO

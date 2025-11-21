@@ -1,15 +1,11 @@
 #include <iostream>
-#include <cmath>
-#include "header.h"
-#include "shader.h"
-#include "mesh.h"
-#include "texture.h"
+#include "Tenasi.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-volatile const unsigned int width = 800;
-volatile const unsigned int height = 800;
+constexpr unsigned int width = 800;
+constexpr unsigned int height = 800;
 
 int main()
 {
@@ -53,27 +49,55 @@ int main()
     glfwMakeContextCurrent(window);
 
     gladLoadGL();
-    // viewport at 800 x 800 px (size of the painting) for dynamics need a better version
-    glViewport(0, 0, width, height);
+
+    Tenasi::Gfx::Shader shaderProgram("resource/shaders/distk.vert", "resource/shaders/distk.frag");
+    Tenasi::Gfx::Mesh obj(vertices, sizeof(vertices), indices, sizeof(indices), (sizeof(indices) / sizeof(unsigned int)));
+    Tenasi::Gfx::Camera cam(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
+
+    // The GLFWwindow* window gets a reference of TCamera cam.
+    glfwSetWindowUserPointer(window, &cam);
+    
+    /* Set a frameBufferSizeCallback. In this function (GLFWwindow*, int width, int height) is the variable that get's fitted.              \
+       we use a lambda func to set that width and height part. The frameBuffSizeCallback func needs to know what height and int it is       \
+       so we give it a GLFWwindow* to help find what the width and height is. The first variable is the one we are setting callback.        \
+       After this function setted when we change the viewport then it will be automatically changed as the OpenGL detects what have changed.\
+                                                                                                                                            \
+                                     p (what to GLFWwindow is going to be changed)                                                          \
+                                     |          p (from what GLFWwindow we get the variables)                                               \
+                                     V          V                                                                                           */  
+    glfwSetFramebufferSizeCallback(window, [](GLFWwindow* win, int w, int h)
+    {
+        // set viewport
+        glViewport(0, 0, w, h);
+        // def local camera ptr var
+        auto camPtr = static_cast<Tenasi::Gfx::Camera*>(glfwGetWindowUserPointer(win));
+        // Initiate the updateProjection function.
+        if (camPtr) camPtr->updateProjection(w, h);
+    });
+
     glfwSwapInterval(1);
+    // To make planes not be mixed on the screen
     glEnable(GL_BLEND);
 
-    Tenasi::Shader::TShader shaderProgram("resource/shaders/distk.vert", "resource/shaders/distk.frag");
-    Tenasi::Mesh::TMesh obj(vertices, sizeof(vertices), indices, sizeof(indices), (sizeof(indices) / sizeof(unsigned int)));
-
+    // unbind for saftey
     obj.unbind();
 
-
+    // uniform ID location getter
     GLuint uniID= glGetUniformLocation(shaderProgram.getID(), "scale");
     
-    Tenasi::Texture::TTexture VScode("resource/textures/VScode.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+    // The texture we are going to use. In my case it's VScode logo.
+    Tenasi::Gfx::Texture VScode("resource/textures/matrix_A.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+    // Make texture present
     VScode.texUnit(shaderProgram, "tex", 0);
 
-
+    // Set clear color
     glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+    // Clear type
     glClear(GL_COLOR_BUFFER_BIT);
+    // swap buffer to make cleared buffer present.
     glfwSwapBuffers(window);
 
+    // rotation angle and start time set.
     float rotation = 0.0f;
     double prevTime = glfwGetTime();
 
@@ -92,20 +116,8 @@ int main()
             prevTime = curTime;
         }
 
-        glm::mat4 model = glm::mat4(1.0f);
-        glm::mat4 view = glm::mat4(1.0f);
-        glm::mat4 proj = glm::mat4(1.0f);
-
-        model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
-        view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f));
-        proj = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
-
-        int modelLoc = glGetUniformLocation(shaderProgram.getID(), "model");
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        int viewLoc = glGetUniformLocation(shaderProgram.getID(), "view");
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-        int projLoc = glGetUniformLocation(shaderProgram.getID(), "proj");
-        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+        cam.Inputs(window);
+        cam.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
 
         glUniform1f(uniID, 0.5f);
 

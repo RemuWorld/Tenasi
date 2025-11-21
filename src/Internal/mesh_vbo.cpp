@@ -1,10 +1,10 @@
-#include "mesh_vbo.h"
-
 #include <cerrno>
 #include <stdexcept>
 #include <string>
 
-namespace Tenasi::Mesh
+#include "mesh_vbo.h"
+
+namespace Tenasi::Internal
 {
     VBO::VBO(GLfloat* vertices, GLsizeiptr size)
     {

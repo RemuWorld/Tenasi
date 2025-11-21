@@ -1,9 +1,12 @@
-#include "shader.h"
-
 #include <iostream>
 #include <stdexcept>
 #include <cstring>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <cerrno>
 
+#include "shader.h"
 
 namespace
 {
@@ -24,9 +27,9 @@ namespace
     }
 }
 
-namespace Tenasi::Shader
+namespace Tenasi::Gfx
 {
-    TShader::TShader(const char* vertexFile, const char* fragmentFile)
+    Shader::Shader(const char* vertexFile, const char* fragmentFile)
     {
         std::string vertexCode = fileReader(vertexFile);
         std::string fragmentCode = fileReader(fragmentFile);
@@ -55,7 +58,7 @@ namespace Tenasi::Shader
         glDeleteShader(shaderV);
         glDeleteShader(shaderF);
     }
-    void TShader::compileErrors(unsigned int shader, const char *type)
+    void Shader::compileErrors(unsigned int shader, const char *type)
     {
         GLint hasCompiled = 0;
         char infoLog[1024];
